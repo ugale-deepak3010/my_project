@@ -1,0 +1,82 @@
+<%-- 
+    Document   : index
+    Created on : 22 Apr, 2020, 3:30:52 PM
+    Author     : Deepak
+--%>
+<%@page import="java.sql.*,java.util.*"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Student_Health_Record</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+    </head>
+    <body>
+        
+          <%
+    String admin_id = (String)session.getAttribute("admin_id");
+if (admin_id == null){
+response.setStatus(response.SC_MOVED_TEMPORARILY);
+         response.setHeader("Location","index.html");
+}
+else{
+//out.print("<h1>" + admin_id + "</h1>");
+//out.print("<a href='logout.jsp'>Logout</a>");
+}
+    %>
+        <div class="container">
+            <hr>
+            <center><h1>Student Health Record</h1></center><hr>
+            <center><div class="btn-group btn-group-lg">
+        <a href="mainpage.html"  class="btn btn-primary active">Register</a>
+        <a href="logout.jsp"  class="btn btn-primary">Logout</a>
+</div> </center><hr>
+            <form action="officer_register.html" method="post">
+                <fieldset>
+    <div class="form-inline fluid" >
+    <div class="form-group col-sm-4">
+      <label for="first_name">First Name :&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" pattern="[A-Za-z]{3,32}" class="form-control" id="first_name" placeholder="Officer first name" name="first_name" required>
+    </div>
+    <div class="form-group col-sm-4">
+      <label for="last_name">Last Name :&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" pattern="[A-Za-z]{3,32}" class="form-control" id="last_name" placeholder="Officer last name" name="last_name" required>
+    </div>
+    <div class="form-group col-sm-4">
+      <label for="phone">Contact No :&nbsp;&nbsp;&nbsp;</label>
+      <input type="tel" class="form-control" id="phone" placeholder="officer Mobile" name="phone" pattern="(6|7|8|9)\d{9}" required>
+    </div>
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="officer_id">Officer ID:</label>
+      <input type="text" class="form-control " id="officer_id" placeholder="Auto generated : <%
+          try{
+              Class.forName("com.mysql.jdbc.Driver");
+              java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_health_record","root","");
+              Statement st= con.createStatement();
+              ResultSet rs;
+              int max=0;
+              rs=st.executeQuery("SELECT MAX(officer_id) from register");
+              //rs.next();
+              //
+              while(rs.next()){
+                max=rs.getInt(1);  //Very Important
+              }
+              out.print(max+1);
+          }catch(Exception e){
+              out.print("errror"+e);
+          }
+        %> " name="officer_id" disabled>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="text" class="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="password" placeholder="Enter password" name="password" required>
+    </div>
+            <center><button type="submit" class="btn btn-outline-dark">Add Officer</button></center>
+                </fieldset>
+  </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+pageEncoding="ISO-8859-1"%>
+<%@page import="java.sql.*,java.util.*" %>
+<%
+    String officer_id_temp= (String)session.getAttribute("officer_id");
+    int officer_id=Integer.parseInt(officer_id_temp);
+    String fname=request.getParameter("fname");
+    String lname=request.getParameter("lname");
+    String prn_temp=request.getParameter("prn");
+    int prn=Integer.parseInt(prn_temp);
+    String height=request.getParameter("height");
+    String weight=request.getParameter("weight");
+    String pc=request.getParameter("ph");
+    String comment=request.getParameter("comment");
+    String favor=request.getParameter("favor");
+    
+    try{
+        Class.forName("com.mysql.jdbc.Driver");
+        java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_health_record","root","");
+Statement st= con.createStatement();
+String qry8="INSERT INTO student_record VALUES(null,'"+fname+"','"+lname+"','"+prn+"','"+height+"','"+weight+"','"+favor+"','"+pc+"','"+comment+"',"+officer_id+",null)";
+out.print("<a href='mainpage.html'>Suucess</a>");
+int i=st.executeUpdate(qry8);
+    }catch(Exception e){
+        out.print("Error=="+e);
+    }
+%>
